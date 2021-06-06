@@ -2,6 +2,7 @@ package com.yoka.diff.Util;
 
 import ch.qos.logback.core.util.FileUtil;
 import com.yoka.common.utils.File.FileUtils;
+import com.yoka.common.utils.exception.BizException;
 import com.yoka.diff.config.ExecutorConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.Git;
