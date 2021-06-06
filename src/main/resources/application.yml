@@ -1,0 +1,14 @@
+spring:
+  git:
+    userName: test
+    password: test
+    local:
+      base:
+        dir:
+
+  svn:
+    userName:
+    password:
+    local:
+      base:
+        dir:
