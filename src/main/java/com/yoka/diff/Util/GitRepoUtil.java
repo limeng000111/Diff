@@ -1,6 +1,8 @@
 package com.yoka.diff.Util;
 
 import ch.qos.logback.core.util.FileUtil;
+import com.google.common.base.Splitter;
+import com.yoka.common.errorcode.BizCode;
 import com.yoka.common.utils.File.FileUtils;
 import com.yoka.common.utils.exception.BizException;
 import com.yoka.diff.config.ExecutorConfig;
@@ -12,16 +14,20 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.util.Strings;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author:jack
@@ -105,13 +111,27 @@ public class GitRepoUtil {
         return flag;
     }
 
+    /**
+     * 将代码转换成树状
+     * @param repository
+     * @param branch
+     * @return
+     */
     public static AbstractTreeIterator prepareTreeParse(Repository repository,String branch){
         try {
             RevWalk walk = new RevWalk(repository);
             RevTree tree;
             if (null == repository.resolve(branch)){
-                throw new BizException();
+                //抛出解析git分支异常
+                throw new BizException(BizCode.PARSE_BRANCH_ERROR);
             }
+            tree = walk.parseTree(repository.resolve(branch));
+            CanonicalTreeParser treeParser = new CanonicalTreeParser();
+            try (ObjectReader reader = repository.newObjectReader()){
+                treeParser.reset(reader,tree.getId());
+            }
+            walk.dispose();
+            return treeParser;
         } catch (IncorrectObjectTypeException e) {
             e.printStackTrace();
         } catch (AmbiguousObjectException e) {
@@ -119,5 +139,30 @@ public class GitRepoUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    /**
+     * 取远程代码本地存储路径
+     * @param repoUrl
+     * @param localBaseRepoUrl
+     * @param version
+     * @return
+     */
+    public static String getLocalDir(String repoUrl,String localBaseRepoUrl,String version){
+        StringBuilder localDir = new StringBuilder(localBaseRepoUrl);
+        if (Strings.isNullOrEmpty(repoUrl)){
+            return "";
+        }
+        localDir.append("/");
+        //java8新特性
+        String repoName = Arrays.stream(repoUrl.split("/")).reduce((first,second)->first)
+                .map(e -> Arrays.stream(e.split(".")).findFirst().get()).get();
+        localDir.append(repoName);
+        if (!Strings.isNullOrEmpty(version)){
+            localDir.append("/");
+            localDir.append(version);
+        }
+        return localDir.toString();
     }
 }
