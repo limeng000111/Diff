@@ -1,12 +1,17 @@
 package com.yoka.diff.Entity;
 
 import com.yoka.diff.Enum.CodeManageTypeEnum;
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * @author:jack
  * @date 2021/6/3 17:46
  * @des:todo
  */
+
+@Data
+@Builder
 public class DiffMethodParams {
     /**
      * 远程仓库

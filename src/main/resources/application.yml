@@ -1,10 +1,10 @@
 spring:
   git:
-    userName: test
-    password: test
+    userName: limeng000111
+    password: LiMeng123456
     local:
       base:
-        dir:
+        dir: E:\diff
 
   svn:
     userName:
@@ -12,3 +12,6 @@ spring:
     local:
       base:
         dir:
+
+#server:
+#  port: 8081

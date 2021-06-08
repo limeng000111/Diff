@@ -1,6 +1,5 @@
-package com.yoka.common.vercontroller;
+package com.yoka.diff.vercontroller;
 
-import com.google.common.collect.Lists;
 import com.yoka.diff.Entity.ClassInfoResult;
 import com.yoka.diff.Entity.DiffEntry;
 import com.yoka.diff.Entity.MethodInfoResult;
