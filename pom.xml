@@ -77,6 +77,16 @@
             <artifactId>guava</artifactId>
             <version>28.2-android</version>
         </dependency>
+        <dependency>
+            <groupId>org.tmatesoft.svnkit</groupId>
+            <artifactId>svnkit</artifactId>
+            <version>1.10.3</version>
+        </dependency>
+        <dependency>
+            <groupId>ma.glasnost.orika</groupId>
+            <artifactId>orika-core</artifactId>
+            <version>1.5.4</version>
+        </dependency>
     </dependencies>
 
     <build>

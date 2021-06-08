@@ -3,6 +3,8 @@ package com.yoka.diff.Entity;
 import com.yoka.diff.Enum.CodeManageTypeEnum;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author:jack
  * @date 2021/6/4 9:41
@@ -32,6 +34,6 @@ public class VersionController {
      */
     private CodeManageTypeEnum codeManageTypeEnum;
 
-    private DiffEntry diffEntry;
+    private List<DiffEntry> diffClass;
 
 }
